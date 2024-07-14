@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Train Station App</title>
+</head>
+<body>
+    <h1>Train Station App</h1>
+    <div class="container">
+        <button onclick="location.href='/check_health'">Check server health</button>
+        <button onclick="showQueryForm()">Get stations by query</button>
+        <button onclick="showIdForm()">Get station by ID</button>
+        <button onclick="showReachableStationsForm()">Get reachable stations</button>
+        <button onclick="showNameForm()">Get reachable stations (by name)</button>
+        <button onclick="showConnectionsForm()">Find reachable station with connections (by name and total time)</button>
+        <button onclick="location.href='/international_station'">Find one international reachable station from London St Pancras (UK)</button>
+    </div>
+    <div id="form-container" class="container"></div>
+    <div id="result" class="container"></div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

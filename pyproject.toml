@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "train-station-app"
+version = "0.1.0"
+description = "Random Train Station App"
+authors = ["Finlay Campbell <yalnifcam2@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10.0,<3.12"
+flask = "^2.0.3"
+requests = "^2.32.3"
+gunicorn = "^20.1.0"
+
+
+[tool.pyright]
+useLibraryCodeForTypes = true
+exclude = [".cache"]
+
+[tool.ruff]
+select = ['E', 'W', 'F', 'I', 'B', 'C4', 'ARG', 'SIM']
+ignore = ['W291', 'W292', 'W293']
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "gunicorn -w 4 -b 0.0.0.0:8080 app:app"

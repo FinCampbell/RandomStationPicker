@@ -1,0 +1,23 @@
+modules = ["python-3.10"]
+run = "poetry run gunicorn -w 4 -b 0.0.0.0:${PORT:-8080} app:app"
+
+[nix]
+channel = "stable-23_05"
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[deployment]
+run = "poetry run gunicorn -w 4 -b 0.0.0.0:${PORT:-8080} app:app"
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
