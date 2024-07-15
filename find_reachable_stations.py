@@ -1,3 +1,5 @@
+# pyright: reportUndefinedVariable=false, reportGeneralTypeIssues=false
+
 import random
 
 import api_client
@@ -45,7 +47,7 @@ def find_reachable_stations_with_connections(station_name, total_duration):
         selection = stations[0]  # Choose the first station
         station_id = selection['id']
         start_city = simplify_station_name(selection['name'])
-        max_connections = random.randint(2, 6)
+        max_connections = random.randint(2, 4)
         print(f"Planning a journey with up to {max_connections} connections.")
         current_duration = 0
         current_station_id = station_id
@@ -53,6 +55,8 @@ def find_reachable_stations_with_connections(station_name, total_duration):
         visited_cities = set()
         visited_cities.add(start_city)
         connection_count = 0
+        last_possible_connections = []
+        last_station_id = '0000000'
         while current_duration < total_duration and connection_count < max_connections:
             remaining_time = total_duration - current_duration
             avg_duration_per_connection = remaining_time / (max_connections -
@@ -69,6 +73,18 @@ def find_reachable_stations_with_connections(station_name, total_duration):
                             simplify_station_name(
                                 station['name']) not in visited_cities)
                 ]
+
+                if not filtered_stations:
+                    print(
+                        f"No more reachable stations within the remaining time. Current duration: {current_duration} hours."
+                    )
+                    break
+
+                filtered_stations = [
+                    station for station in filtered_stations
+                    if station["name"] not in last_possible_connections
+                ]
+
                 if not filtered_stations:
                     print(
                         f"No more reachable stations within the remaining time. Current duration: {current_duration} hours."
@@ -76,9 +92,14 @@ def find_reachable_stations_with_connections(station_name, total_duration):
                     break
 
                 next_station = random.choice(filtered_stations)
+                print(next_station)
                 journey.append(next_station)
                 current_duration += next_station['duration']
                 visited_cities.add(simplify_station_name(next_station['name']))
+
+                for station in reachable_stations["reachable_stations"]:
+                    last_possible_connections.append(station["name"])
+
                 current_station_id = next_station['id']
                 connection_count += 1
             else:
